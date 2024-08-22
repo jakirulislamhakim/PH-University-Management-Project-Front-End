@@ -1,9 +1,11 @@
 import { Button } from 'antd';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLoginMutation } from '../redux/features/auth/authApi';
-import { setUser } from '../redux/features/auth/authSlice';
+import { setUser, TUser } from '../redux/features/auth/authSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { jwtDecode } from 'jwt-decode';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 type TInputs = {
   id: string;
@@ -11,10 +13,13 @@ type TInputs = {
 };
 
 const Login = () => {
-  const [login, { error }] = useLoginMutation();
+  const [login,] = useLoginMutation();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  console.log('error =>', error);
+  const location = useLocation();
+  // Access the location's state
+  const from = location.state?.from?.pathname;
 
   const {
     register,
@@ -28,10 +33,11 @@ const Login = () => {
   });
 
   const onSubmit: SubmitHandler<TInputs> = async data => {
+    const id = toast.loading('Logins....', { id: 2 });
     try {
       const res = await login(data).unwrap();
       // deeded jwt token
-      const user = jwtDecode(res.data.accessToken);
+      const user: TUser = jwtDecode(res.data.accessToken);
 
       dispatch(
         setUser({
@@ -40,9 +46,13 @@ const Login = () => {
         })
       );
 
-      console.log(user);
+      toast.success('Successfully login', { id, duration: 2000 });
+
+      // navigate user
+      navigate(from ? from : `/${user.userRole}/dashboard`, { replace: true });
     } catch (error) {
       console.log(error);
+      toast.loading('Logins....', { id, duration: 2000 });
     }
   };
 
@@ -65,7 +75,7 @@ const Login = () => {
         />
       </div>
       <Button htmlType="submit" loading={isSubmitting}>
-        Submit
+        Login
       </Button>
     </form>
   );
