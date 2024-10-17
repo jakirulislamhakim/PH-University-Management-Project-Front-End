@@ -36,7 +36,11 @@ const Sidebar = () => {
   }
 
   return (
-    <Sider breakpoint="lg" collapsedWidth="0">
+    <Sider
+      breakpoint="lg"
+      collapsedWidth="0"
+      style={{ height: '100vh', overflow: 'auto', position: 'sticky', top: '0px', left: '0px' }}
+    >
       <div
         style={{
           color: 'white',
@@ -52,7 +56,7 @@ const Sidebar = () => {
         theme="dark"
         mode="inline"
         defaultSelectedKeys={['4']}
-        items={sidebarItem} //! menu item sidebar use dynamically by user role
+        items={sidebarItem} //* menu item sidebar use dynamically by user role
       />
     </Sider>
   );

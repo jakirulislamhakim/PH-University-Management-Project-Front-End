@@ -1,12 +1,15 @@
 import {
+  BaseQueryApi,
   BaseQueryFn,
   createApi,
+  DefinitionType,
   FetchArgs,
   fetchBaseQuery,
-  FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 import { logoutUser, setUser, TUser } from '../features/auth/authSlice';
+import { toast } from 'sonner';
+import { TApiErrorResponse } from '../../types';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:5000/api/v1',
@@ -23,11 +26,17 @@ const baseQuery = fetchBaseQuery({
 
 const baseApiWithRefreshToken: BaseQueryFn<
   string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
+  BaseQueryApi,
+  DefinitionType
 > = async (arg, api, extraOptions): Promise<any> => {
   try {
     let result = await baseQuery(arg, api, extraOptions);
+
+    if (result.error?.status === 404) {
+      const errorData = result.error as TApiErrorResponse;
+      return toast.error(errorData.data.message);
+    }
+
     if (result.error?.status === 401) {
       console.log('sending refresh token...');
       const res = await fetch('http://localhost:5000/api/v1/auth/refresh-token', {
@@ -58,6 +67,7 @@ const baseApiWithRefreshToken: BaseQueryFn<
   }
 };
 
+// root api
 export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: baseApiWithRefreshToken,

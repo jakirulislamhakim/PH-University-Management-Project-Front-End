@@ -15,7 +15,7 @@ const MainLayout = () => {
   return (
     <Layout
       style={{
-        minHeight: '100vh',
+        minHeight: '100%',
       }}
     >
       <Sidebar />

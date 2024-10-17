@@ -1,11 +1,14 @@
-import { Button } from 'antd';
-import { SubmitHandler, useForm } from 'react-hook-form';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Button, Row } from 'antd';
+import { SubmitHandler } from 'react-hook-form';
 import { useLoginMutation } from '../redux/features/auth/authApi';
 import { setUser, TUser } from '../redux/features/auth/authSlice';
 import { useAppDispatch } from '../redux/hooks';
 import { jwtDecode } from 'jwt-decode';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import PHForm from '../components/PHForm/PHForm';
+import PHInput from '../components/PHForm/PHInput';
 
 type TInputs = {
   id: string;
@@ -13,7 +16,7 @@ type TInputs = {
 };
 
 const Login = () => {
-  const [login,] = useLoginMutation();
+  const [login] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -21,18 +24,20 @@ const Login = () => {
   // Access the location's state
   const from = location.state?.from?.pathname;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<TInputs>({
-    defaultValues: {
-      id: 'A-0001',
-      password: 'admin123',
-    },
-  });
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { isSubmitting },
+  // } = useForm<TInputs>({
+  //   defaultValues: {
+  //     id: 'A-0001',
+  //     password: 'admin123',
+  //   },
+  // });
 
   const onSubmit: SubmitHandler<TInputs> = async data => {
+    console.log(data);
+
     const id = toast.loading('Logins....', { id: 2 });
     try {
       const res = await login(data).unwrap();
@@ -51,33 +56,29 @@ const Login = () => {
       // navigate user
       navigate(from ? from : `/${user.userRole}/dashboard`, { replace: true });
     } catch (error) {
-      console.log(error);
-      toast.loading('Logins....', { id, duration: 2000 });
+      toast.error('Login failed !', { duration: 2000, id });
     }
   };
 
+  const defaultValues = {
+    id: 'A-0001',
+    password: 'admin123',
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="id">Id</label>
-        <input
-          type="text"
-          id="id"
-          {...register('id', { required: 'id is required' })}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          type="text"
-          id="password"
-          {...register('password', { required: 'password is required' })}
-        />
-      </div>
-      <Button htmlType="submit" loading={isSubmitting}>
-        Login
-      </Button>
-    </form>
+    <Row justify={'center'} align={'middle'} style={{ height: '100vh' }}>
+      <PHForm onSubmit={onSubmit} defaultValues={defaultValues}>
+        <div>
+          <PHInput label="Id:" type={'text'} name={'id'} />
+        </div>
+        <div>
+          <PHInput label="Password" type={'text'} name={'password'} />
+        </div>
+        <div>
+          <Button htmlType="submit" /*loading={isSubmitting }*/>Login</Button>
+        </div>
+      </PHForm>
+    </Row>
   );
 };
 
