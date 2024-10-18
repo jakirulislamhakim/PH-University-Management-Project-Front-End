@@ -5,28 +5,29 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config({
-   extends: [js.configs.recommended, ...tseslint.configs.recommended],
-   files: ['**/*.{ts,tsx}'],
-   ignores: ['dist'],
-   languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-   },
-   plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-   },
-   rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-         'warn',
-         {
-            allowConstantExport: true,
-         },
-      ],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      'no-console': 'warn',
-      'no-var': 'error',
-      'prefer-const': 'error'
-   },
+  extends: [js.configs.recommended, ...tseslint.configs.recommended],
+  files: ['**/*.{ts,tsx}'],
+  ignores: ['dist'],
+  languageOptions: {
+    ecmaVersion: 2020,
+    globals: globals.browser,
+  },
+  plugins: {
+    'react-hooks': reactHooks,
+    'react-refresh': reactRefresh,
+  },
+  rules: {
+    ...reactHooks.configs.recommended.rules,
+    'react-refresh/only-export-components': [
+      'warn',
+      {
+        allowConstantExport: true,
+      },
+    ],
+    '@typescript-eslint/no-explicit-any': 'warn',
+    'no-console': 'warn',
+    'no-var': 'error',
+    'prefer-const': 'error',
+    '@typescript-eslint/no-unused-vars': 'warn',
+  },
 });

@@ -1,19 +1,22 @@
 import { Form, Select } from 'antd';
 import { Controller } from 'react-hook-form';
+import { TSelectOptionsType } from '../../types';
 
 type TPHSelectProps = {
   name: string;
   label: string;
-  options: { value: string; label: string; disabled?: boolean }[];
+  disabled?: boolean;
+  options: TSelectOptionsType;
 };
 
-const PHSelect = ({ name, label, options }: TPHSelectProps) => {
+const PHSelect = ({ name, label, options, disabled }: TPHSelectProps) => {
   return (
     <Controller
       name={name}
       render={({ field, fieldState: { error } }) => (
         <Form.Item label={label}>
           <Select
+            disabled={disabled}
             defaultValue={'Select'}
             {...field}
             options={options}

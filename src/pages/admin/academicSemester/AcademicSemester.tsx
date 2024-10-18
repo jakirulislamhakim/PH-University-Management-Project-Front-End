@@ -2,7 +2,7 @@ import { useGetAllAcademicSemesterQuery } from '../../../redux/features/admin/ac
 
 import { Button, Table } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
-import { TAcademicSemester } from '../../../types/academicSemester.type';
+import { TAcademicSemester } from '../../../types/academicManagement.type';
 import { useState } from 'react';
 import { TQueryParams } from '../../../types';
 
@@ -69,7 +69,7 @@ const columns: TableColumnsType<TTableData> = [
     render: () => {
       return (
         <div>
-          <Button type='primary'>Update</Button>
+          <Button type="primary">Update</Button>
         </div>
       );
     },
@@ -92,12 +92,12 @@ const AcademicSemester = () => {
   ) => {
     const queryParams: TQueryParams[] = [];
     if (extra.action === 'filter') {
-      filters?.name?.forEach(name =>
+      filters?.name?.forEach((name) =>
         queryParams.push({ name: 'name', value: name as string })
       );
     }
     if (extra.action === 'filter') {
-      filters?.year?.forEach(name =>
+      filters?.year?.forEach((name) =>
         queryParams.push({ name: 'year', value: name as string })
       );
     }

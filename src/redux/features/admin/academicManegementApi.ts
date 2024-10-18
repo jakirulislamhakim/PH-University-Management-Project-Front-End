@@ -1,14 +1,19 @@
-import { TQueryParams, TResponseRedux } from '../../../types';
-import { TAcademicSemester } from '../../../types/academicSemester.type';
+import {
+  TAcademicDepartment,
+  TAcademicSemester,
+  TQueryParams,
+  TResponseRedux,
+} from '../../../types';
+
 import { baseApi } from '../../api/baseApi';
 
 const academicManagementApi = baseApi.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     getAllAcademicSemester: builder.query({
-      query: (arg: TQueryParams[]) => {
+      query: (arg: TQueryParams[] | undefined) => {
         const params = new URLSearchParams();
-        if (arg.length) {
-          arg.forEach((item: TQueryParams) => params.append(item.name, item.value));
+        if (arg?.length) {
+          arg?.forEach((item: TQueryParams) => params.append(item.name, item.value));
         }
 
         return {
@@ -23,8 +28,27 @@ const academicManagementApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getAllAcademicDepartment: builder.query({
+      query: (arg: TQueryParams[] | undefined) => {
+        const params = new URLSearchParams();
+        if (arg?.length) {
+          arg?.forEach((item: TQueryParams) => params.append(item.name, item.value));
+        }
+
+        return {
+          url: '/academic-departments',
+          method: 'GET',
+          params,
+        };
+      },
+      transformResponse: (response: TResponseRedux<TAcademicDepartment[]>) => {
+        return {
+          departmentData: response?.data,
+        };
+      },
+    }),
     addAcademicSemester: builder.mutation({
-      query: body => ({
+      query: (body) => ({
         url: '/academic-semesters/create-academic-semester',
         method: 'POST',
         body,
@@ -33,5 +57,8 @@ const academicManagementApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllAcademicSemesterQuery, useAddAcademicSemesterMutation } =
-  academicManagementApi;
+export const {
+  useGetAllAcademicSemesterQuery,
+  useAddAcademicSemesterMutation,
+  useGetAllAcademicDepartmentQuery,
+} = academicManagementApi;

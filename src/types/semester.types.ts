@@ -1,1 +1,1 @@
-export type TSelectOptionsType = { value: string; label: string }[];
+export type TSelectOptionsType = { value: string; label: string }[] | undefined;

@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { ReactNode } from 'react';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { FieldValues, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 
 type TPHFormProps = {
   onSubmit: SubmitHandler<any>;
@@ -26,9 +26,14 @@ const PHForm = ({ onSubmit, children, defaultValues, resolver }: TPHFormProps) =
 
   const methods = useForm(formConfig);
 
+  const handleOnSubmit: SubmitHandler<FieldValues> = (data) => {
+    methods.reset();
+    onSubmit(data);
+  };
+
   return (
     <FormProvider {...methods}>
-      <Form layout="vertical" onFinish={methods.handleSubmit(onSubmit)}>
+      <Form layout="vertical" onFinish={methods.handleSubmit(handleOnSubmit)}>
         {children}
       </Form>
       ;
