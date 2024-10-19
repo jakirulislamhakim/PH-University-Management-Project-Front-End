@@ -35,8 +35,8 @@ const Login = () => {
   //   },
   // });
 
-  const onSubmit: SubmitHandler<TInputs> = async data => {
-    console.log(data);
+  const onSubmit: SubmitHandler<TInputs> = async (data) => {
+    // console.log(data);
 
     const id = toast.loading('Logins....', { id: 2 });
     try {

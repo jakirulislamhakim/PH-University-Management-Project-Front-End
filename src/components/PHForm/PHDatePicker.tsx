@@ -1,12 +1,14 @@
 import { DatePicker, Form } from 'antd';
+import dayjs from 'dayjs';
 import { Controller } from 'react-hook-form';
 
 type TDatePickerProps = {
   name: string;
   label: string;
+  dateOfBirth?: string;
 };
 
-const PHDatePicker = ({ name, label }: TDatePickerProps) => {
+const PHDatePicker = ({ name, label, dateOfBirth }: TDatePickerProps) => {
   return (
     <div style={{ marginBottom: '20px' }}>
       <Controller
@@ -16,6 +18,7 @@ const PHDatePicker = ({ name, label }: TDatePickerProps) => {
             <Form.Item label={label}>
               <DatePicker
                 {...field}
+                value={dateOfBirth ? dayjs(dateOfBirth) : null}
                 size="large"
                 style={{ width: '100%' }}
                 format={'DD/MM/YYYY'}

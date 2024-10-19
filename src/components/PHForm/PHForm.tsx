@@ -5,6 +5,7 @@ import { FieldValues, FormProvider, SubmitHandler, useForm } from 'react-hook-fo
 type TPHFormProps = {
   onSubmit: SubmitHandler<any>;
   children: ReactNode;
+  disabled?: boolean;
 } & TFormConfig;
 
 type TFormConfig = {
@@ -12,7 +13,13 @@ type TFormConfig = {
   resolver?: any;
 };
 
-const PHForm = ({ onSubmit, children, defaultValues, resolver }: TPHFormProps) => {
+const PHForm = ({
+  onSubmit,
+  children,
+  defaultValues,
+  resolver,
+  disabled = false,
+}: TPHFormProps) => {
   const formConfig: TFormConfig = {};
 
   if (defaultValues) {
@@ -33,7 +40,11 @@ const PHForm = ({ onSubmit, children, defaultValues, resolver }: TPHFormProps) =
 
   return (
     <FormProvider {...methods}>
-      <Form layout="vertical" onFinish={methods.handleSubmit(handleOnSubmit)}>
+      <Form
+        layout="vertical"
+        onFinish={methods.handleSubmit(handleOnSubmit)}
+        disabled={disabled}
+      >
         {children}
       </Form>
       ;

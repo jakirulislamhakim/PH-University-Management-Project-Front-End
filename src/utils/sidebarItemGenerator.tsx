@@ -2,11 +2,13 @@ import { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import { TUserPath } from '../types';
 
-type TSidebarItem = {
-  key: string;
-  label: ReactNode;
-  children?: TSidebarItem[];
-};
+type TSidebarItem =
+  | {
+      key: string;
+      label: ReactNode;
+      children?: TSidebarItem[];
+    }
+  | undefined;
 
 const sidebarItemGenerator = (userPaths: TUserPath[], userBaseRole: string) => {
   const sidebarItem = userPaths.reduce((acc, item) => {
@@ -19,12 +21,16 @@ const sidebarItemGenerator = (userPaths: TUserPath[], userBaseRole: string) => {
       acc.push({
         key: item.name,
         label: item.name,
-        children: item.children.map(child => ({
-          key: child.name,
-          label: (
-            <NavLink to={`/${userBaseRole}/${child.path}`}>{child.name}</NavLink>
-          ),
-        })),
+        children: item.children.map((child) => {
+          if (child.name) {
+            return {
+              key: child?.name,
+              label: (
+                <NavLink to={`/${userBaseRole}/${child.path}`}>{child.name}</NavLink>
+              ),
+            };
+          }
+        }),
       });
     }
 

@@ -9,18 +9,17 @@ export type TAcademicSemester = {
   updatedAt: string;
 };
 
-
-type TAcademicFaculty ={
+export type TAcademicFaculty = {
   _id: string;
   name: string;
   createdAt: string;
   updatedAt: string;
-}
+};
 
-export interface TAcademicDepartment {
+export type TAcademicDepartment = {
   _id: string;
   name: string;
   academicFaculty: TAcademicFaculty;
   createdAt: string;
   updatedAt: string;
-}
+};
